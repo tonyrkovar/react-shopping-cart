@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { Route } from 'react-router-dom';
+import { useParams } from 'react-router';
 import data from './data';
 
 import { ProductContext } from './contexts/ProductContext';
@@ -13,15 +14,21 @@ import ShoppingCart from './components/ShoppingCart';
 function App() {
 	const [products] = useState(data);
 	const [cart, setCart] = useState([]);
+	// const { id } = useParams();
 
 	const addItem = item => {
 		setCart([...cart, item])
 	};
 
+	const removeItem = id => {
+		setCart(cart.filter((item) => item.id !== id))
+		console.log('triggered')
+	}
+
 	return (
 		<div className="App">
 			<ProductContext.Provider value={{ products, addItem }}>
-				<CartContext.Provider value={cart}>
+				<CartContext.Provider value={{ cart, removeItem }}>
 					<Navigation />
 					<Route
 						exact
